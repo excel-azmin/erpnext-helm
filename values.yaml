@@ -274,18 +274,34 @@ persistence:
 # Ingress
 ingress:
   # ingressName: ""
-  # className: ""
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  className: "nginx"
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    # WebSocket support annotations:
+    nginx.ingress.kubernetes.io/proxy-set-header: "Upgrade $http_upgrade"
+    nginx.ingress.kubernetes.io/proxy-set-header: "Connection upgrade"
+    nginx.ingress.kubernetes.io/proxy-set-header: "Host $host"
   hosts:
-  - host: erp.cluster.local
-    paths:
-    - path: /
-      pathType: ImplementationSpecific
-  tls: []
+    - host: "erp.k8s.com"  # Change to your actual domain
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: erpnext
+              port:
+                number: 8080
+        - path: /socket.io
+          pathType: Prefix
+          backend:
+            service:
+              name: erpnext-socketio
+              port:
+                number: 9000
+  # tls: []
   #  - secretName: auth-server-tls
   #    hosts:
   #      - auth-server.local
