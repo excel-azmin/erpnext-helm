@@ -273,7 +273,7 @@ persistence:
 
 # Ingress
 ingress:
-  # ingressName: ""
+  ingressName: "erpnext-ingress"
   className: "nginx"
   enabled: true
   annotations: {}
@@ -289,13 +289,13 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-          backend:
-            service:
-              name: erpnext
-              port:
-                number: 8080
+          # backend:
+          #   service:
+          #     name: erpnext
+          #     port:
+          #       number: 8080
         
-  # tls: []
+  tls: []
   #  - secretName: auth-server-tls
   #    hosts:
   #      - auth-server.local
