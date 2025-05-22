@@ -432,6 +432,12 @@ mariadb:
     password: "changeit"
     replicationPassword: "changeit"
   primary:
+    persistence:
+      enabled: true
+      storageClass: "nfs-client"
+      size: 8Gi  # Adjust size as needed
+      accessModes:
+        - ReadWriteOnce
     service:
       ports:
         mysql: 3306
