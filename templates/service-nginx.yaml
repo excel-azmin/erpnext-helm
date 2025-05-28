@@ -1,16 +1,18 @@
+# erpnext-nginx-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "erpnext.fullname" . }}
+  name: erpnext-nginx
   labels:
-    {{- include "erpnext.labels" . | nindent 4 }}
+    app.kubernetes.io/name: erpnext-nginx
+    app.kubernetes.io/instance: erpnext
 spec:
-  type: {{ .Values.nginx.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.nginx.service.port }}
-      targetPort: http
+    - port: 8080
+      targetPort: 8080
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "erpnext.name" . }}-nginx
-    app.kubernetes.io/instance: {{ .Release.Name }}-nginx
+    app.kubernetes.io/component: nginx
+    app.kubernetes.io/instance: erpnext
