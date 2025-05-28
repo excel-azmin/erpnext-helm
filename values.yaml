@@ -273,27 +273,19 @@ persistence:
 
 # Ingress
 ingress:
+  enabled: true
   ingressName: "erpnext-ingress"
   className: "nginx"
-  enabled: true
-  annotations: {}
-    # nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    # nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    # nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    # # WebSocket support annotations:
-    # nginx.ingress.kubernetes.io/proxy-set-header: "Upgrade $http_upgrade"
-    # nginx.ingress.kubernetes.io/proxy-set-header: "Connection upgrade"
-    # nginx.ingress.kubernetes.io/proxy-set-header: "Host $host"
   hosts:
-    - host: "erp.k8s.com"  # Change to your actual domain
+    - host: "erp.k8s.com"
       paths:
         - path: /
           pathType: Prefix
-          # backend:
-          #   service:
-          #     name: erpnext
-          #     port:
-          #       number: 8080
+          backend:
+            service:
+              name: erpnext-nginx
+              port:
+                number: 8080
         
   tls: []
   #  - secretName: auth-server-tls
