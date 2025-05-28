@@ -110,10 +110,18 @@ worker:
     affinity: {}
     livenessProbe:
       override: true
-      probe: {}
+      probe:
+        tcpSocket:
+          port: 8000
+        initialDelaySeconds: 5
+        periodSeconds: 10
     readinessProbe:
       override: true
-      probe: {}
+      probe:
+        tcpSocket:
+          port: 8000
+        initialDelaySeconds: 5
+        periodSeconds: 10
     envVars: []
     initContainers: []
     sidecars: []
@@ -154,10 +162,18 @@ worker:
     affinity: {}
     livenessProbe:
       override: true
-      probe: {}
+      probe:
+        tcpSocket:
+          port: 8000
+        initialDelaySeconds: 5
+        periodSeconds: 10
     readinessProbe:
       override: true
-      probe: {}
+      probe:
+        tcpSocket:
+          port: 8000
+        initialDelaySeconds: 5
+        periodSeconds: 10
     envVars: []
     initContainers: []
     sidecars: []
@@ -170,10 +186,18 @@ worker:
     affinity: {}
     livenessProbe:
       override: true
-      probe: {}
+      probe:
+        tcpSocket:
+          port: 8000
+        initialDelaySeconds: 5
+        periodSeconds: 10
     readinessProbe:
       override: true
-      probe: {}
+      probe:
+        tcpSocket:
+          port: 8000
+        initialDelaySeconds: 5
+        periodSeconds: 10
     envVars: []
     initContainers: []
     sidecars: []
