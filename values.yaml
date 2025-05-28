@@ -283,7 +283,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: erpnext-nginx
+              name: erpnext
               port:
                 number: 8080
         
