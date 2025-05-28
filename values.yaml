@@ -30,7 +30,7 @@ nginx:
     upstreamRealIPAddress: "127.0.0.1"
     upstreamRealIPRecursive: "off"
     upstreamRealIPHeader: "X-Forwarded-For"
-    frappeSiteNameHeader: erp.k8s.com
+    frappeSiteNameHeader: erp.cluster.local
     proxyReadTimeout: "120"
     clientMaxBodySize: "50m"
   livenessProbe:
@@ -69,7 +69,7 @@ worker:
   gunicorn:
     replicaCount: 1
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 1
       maxReplicas: 3
       targetCPU: 75
@@ -99,7 +99,7 @@ worker:
   default:
     replicaCount: 1
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 1
       maxReplicas: 3
       targetCPU: 75
@@ -109,10 +109,10 @@ worker:
     tolerations: []
     affinity: {}
     livenessProbe:
-      override: false
+      override: true
       probe: {}
     readinessProbe:
-      override: false
+      override: true
       probe: {}
     envVars: []
     initContainers: []
@@ -121,7 +121,7 @@ worker:
   short:
     replicaCount: 1
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 1
       maxReplicas: 3
       targetCPU: 75
@@ -143,7 +143,7 @@ worker:
   long:
     replicaCount: 1
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 1
       maxReplicas: 3
       targetCPU: 75
@@ -153,10 +153,10 @@ worker:
     tolerations: []
     affinity: {}
     livenessProbe:
-      override: false
+      override: true
       probe: {}
     readinessProbe:
-      override: false
+      override: true
       probe: {}
     envVars: []
     initContainers: []
@@ -169,10 +169,10 @@ worker:
     tolerations: []
     affinity: {}
     livenessProbe:
-      override: false
+      override: true
       probe: {}
     readinessProbe:
-      override: false
+      override: true
       probe: {}
     envVars: []
     initContainers: []
@@ -228,7 +228,7 @@ worker:
 socketio:
   replicaCount: 1
   autoscaling:
-    enabled: false
+    enabled: true
     minReplicas: 1
     maxReplicas: 3
     targetCPU: 75
@@ -264,7 +264,7 @@ persistence:
     - ReadWriteMany
   logs:
     # Container based log search and analytics stack recommended
-    enabled: false
+    enabled: true
     # existingClaim: ""
     size: 8Gi
     storageClass: "nfs-client"
@@ -289,7 +289,7 @@ ingress:
 
 jobs:
   volumePermissions:
-    # jobName: ""
+    jobName: "volume-permissions"
     enabled: true
     backoffLimit: 0
     resources: {}
@@ -298,7 +298,7 @@ jobs:
     affinity: {}
 
   configure:
-    # jobName: ""
+    jobName: "create-config"
     enabled: true
     fixVolume: true
     backoffLimit: 0
@@ -311,7 +311,7 @@ jobs:
     args: []
 
   createSite:
-    # jobName: ""
+    jobName: "create-site"
     enabled: true
     forceCreate: true
     siteName: "erp.cluster.local"
