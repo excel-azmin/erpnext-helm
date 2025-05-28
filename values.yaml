@@ -281,11 +281,6 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-          backend:
-            service:
-              name: erpnext-nginx
-              port:
-                number: 8080
 
 
   #  - secretName: auth-server-tls
