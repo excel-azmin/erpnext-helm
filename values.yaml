@@ -68,61 +68,99 @@ nginx:
 worker:
   gunicorn:
     replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPU: 75
+      targetMemory: 75
+    livenessProbe:
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 5
+      periodSeconds: 10
     service:
       type: ClusterIP
       port: 8000
-    livenessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
-    readinessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
-
-  scheduler:
-    replicaCount: 1
-    livenessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
-    readinessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    args: []
+    envVars: []
+    initContainers: []
+    sidecars: []
 
   default:
     replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPU: 75
+      targetMemory: 75
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
     livenessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
+      override: false
+      probe: {}
     readinessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
+      override: false
+      probe: {}
+    envVars: []
+    initContainers: []
+    sidecars: []
 
   short:
     replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPU: 75
+      targetMemory: 75
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    livenessProbe:
+      override: false
+      probe: {}
+    readinessProbe:
+      override: false
+      probe: {}
+    envVars: []
+    initContainers: []
+    sidecars: []
 
   long:
     replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPU: 75
+      targetMemory: 75
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
     livenessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
+      override: false
+      probe: {}
     readinessProbe:
-      tcpSocket:
-        port: 8000
-      initialDelaySeconds: 10
-      periodSeconds: 20
+      override: false
+      probe: {}
+    envVars: []
+    initContainers: []
+    sidecars: []
 
   scheduler:
     replicaCount: 1
@@ -131,19 +169,11 @@ worker:
     tolerations: []
     affinity: {}
     livenessProbe:
-      override: true
-      probe:
-        tcpSocket:
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 10
+      override: false
+      probe: {}
     readinessProbe:
-      override: true
-      probe:
-        tcpSocket:
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 10
+      override: false
+      probe: {}
     envVars: []
     initContainers: []
     sidecars: []
@@ -198,7 +228,7 @@ worker:
 socketio:
   replicaCount: 1
   autoscaling:
-    enabled: true
+    enabled: false
     minReplicas: 1
     maxReplicas: 3
     targetCPU: 75
@@ -229,12 +259,14 @@ persistence:
     enabled: true
     size: 8Gi
     storageClass: "nfs-client"
-    accessModes: [ReadWriteMany]
+    accessModes: 
+      - ReadWriteMany
   logs:
     enabled: true
     size: 8Gi
     storageClass: "nfs-client"
-    accessModes: [ReadWriteMany]
+    accessModes: 
+      - ReadWriteMany
 
 # Ingress
 ingress:
