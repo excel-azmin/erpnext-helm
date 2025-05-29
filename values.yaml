@@ -68,115 +68,58 @@ nginx:
 worker:
   gunicorn:
     replicaCount: 1
-    autoscaling:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 3
-      targetCPU: 75
-      targetMemory: 75
     livenessProbe:
       tcpSocket:
         port: 8000
-      initialDelaySeconds: 5
-      periodSeconds: 10
+      initialDelaySeconds: 10
+      periodSeconds: 20
     readinessProbe:
       tcpSocket:
         port: 8000
-      initialDelaySeconds: 5
-      periodSeconds: 10
-    service:
-      type: ClusterIP
-      port: 8000
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    args: []
-    envVars: []
-    initContainers: []
-    sidecars: []
+      initialDelaySeconds: 10
+      periodSeconds: 20
+
+  scheduler:
+    replicaCount: 1
+    livenessProbe:
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 10
+      periodSeconds: 20
+    readinessProbe:
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 10
+      periodSeconds: 20
 
   default:
     replicaCount: 1
-    autoscaling:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 3
-      targetCPU: 75
-      targetMemory: 75
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
     livenessProbe:
-      override: true
-      probe:
-        tcpSocket:
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 10
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 10
+      periodSeconds: 20
     readinessProbe:
-      override: true
-      probe:
-        tcpSocket:
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 10
-    envVars: []
-    initContainers: []
-    sidecars: []
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 10
+      periodSeconds: 20
 
   short:
     replicaCount: 1
-    autoscaling:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 3
-      targetCPU: 75
-      targetMemory: 75
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    livenessProbe:
-      override: false
-      probe: {}
-    readinessProbe:
-      override: false
-      probe: {}
-    envVars: []
-    initContainers: []
-    sidecars: []
 
   long:
     replicaCount: 1
-    autoscaling:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 3
-      targetCPU: 75
-      targetMemory: 75
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
     livenessProbe:
-      override: true
-      probe:
-        tcpSocket:
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 10
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 10
+      periodSeconds: 20
     readinessProbe:
-      override: true
-      probe:
-        tcpSocket:
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 10
-    envVars: []
-    initContainers: []
-    sidecars: []
+      tcpSocket:
+        port: 8000
+      initialDelaySeconds: 10
+      periodSeconds: 20
 
   scheduler:
     replicaCount: 1
@@ -281,19 +224,14 @@ socketio:
 persistence:
   worker:
     enabled: true
-    # existingClaim: ""
     size: 8Gi
     storageClass: "nfs-client"
-    accessModes:
-    - ReadWriteMany
+    accessModes: [ReadWriteMany]
   logs:
-    # Container based log search and analytics stack recommended
     enabled: true
-    # existingClaim: ""
     size: 8Gi
     storageClass: "nfs-client"
-    accessModes:
-    - ReadWriteMany
+    accessModes: [ReadWriteMany]
 
 # Ingress
 ingress:
@@ -335,21 +273,13 @@ jobs:
     args: []
 
   createSite:
-    jobName: "create-site"
     enabled: true
-    forceCreate: true
     siteName: "erp.cluster.local"
     adminPassword: "changeit"
-    adminExistingSecret: ""
-    adminExistingSecretKey: "password"
     installApps:
-    - "erpnext"
+      - erpnext
     dbType: "mariadb"
-    backoffLimit: 0
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
+    forceCreate: true
 
   dropSite:
     # jobName: ""
@@ -419,11 +349,9 @@ securityContext:
 redis-cache:
   # https://github.com/bitnami/charts/tree/master/bitnami/redis
   enabled: true
-  # host: ""
   architecture: standalone
   auth:
     enabled: false
-    sentinel: false
   master:
     containerPorts:
       redis: 6379
@@ -431,13 +359,10 @@ redis-cache:
       enabled: false
 
 redis-queue:
-  # https://github.com/bitnami/charts/tree/master/bitnami/redis
   enabled: true
-  # host: ""
   architecture: standalone
   auth:
     enabled: false
-    sentinel: false
   master:
     containerPorts:
       redis: 6379
@@ -445,7 +370,6 @@ redis-queue:
       enabled: false
 
 mariadb:
-  # https://github.com/bitnami/charts/tree/master/bitnami/mariadb
   enabled: true
   auth:
     rootPassword: "changeit"
@@ -455,10 +379,9 @@ mariadb:
   primary:
     persistence:
       enabled: true
+      size: 8Gi
       storageClass: "nfs-client"
-      size: 8Gi  # Adjust size as needed
-      accessModes:
-        - ReadWriteOnce
+      accessModes: [ReadWriteOnce]
     service:
       ports:
         mysql: 3306
