@@ -308,13 +308,13 @@ jobs:
     args: []
 
   createSite:
-    enabled: true
+    enabled: false
     siteName: "erp.cluster.local"
     adminPassword: "changeit"
     installApps:
       - erpnext
     dbType: "mariadb"
-    forceCreate: true
+    forceCreate: false
 
   dropSite:
     # jobName: ""
