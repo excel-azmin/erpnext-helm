@@ -68,6 +68,9 @@ nginx:
 worker:
   gunicorn:
     replicaCount: 1
+    service:
+      type: ClusterIP
+      port: 8000
     livenessProbe:
       tcpSocket:
         port: 8000
